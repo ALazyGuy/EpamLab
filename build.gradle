@@ -1,0 +1,7 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'com.ltp'
+version '1.0.0'
