@@ -22,6 +22,11 @@ dependencies {
 }
 
 task uberJar(type: Jar) {
+
+    manifest{
+        attributes('name': rootProject.name, 'version': version)
+    }
+
     archiveClassifier = 'uber'
 
     from sourceSets.main.output
