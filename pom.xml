@@ -16,7 +16,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>13</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.target>13</maven.compiler.target>
     <spring.version>5.3.7</spring.version>
   </properties>
 
@@ -59,7 +59,11 @@
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.26</version>
     </dependency>
-
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+    </dependency>
   </dependencies>
 
   <build>
