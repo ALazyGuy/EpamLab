@@ -29,17 +29,17 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public boolean create(String name){
+    public Tag create(String name){
         int count = countByName(name);
 
         if(count != 0) {
-            return false;
+            return loadByName(name).get();
         }
 
         jdbcTemplate.update("INSERT INTO tags (name) VALUES (?)",
                 new Object[]{name},
                 new int[]{Types.VARCHAR});
-        return true;
+        return loadByName(name).get();
     }
 
     @Override
@@ -51,15 +51,10 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public Optional<Tag> loadByName(String name) {
-        int count = countByName(name);
-
-        if(count == 0){
-            return Optional.empty();
-        }
-
-        return Optional.of(jdbcTemplate.queryForObject("SELECT * FROM tags WHERE name=?",
-                new Object[]{name},
-                new int[]{Types.VARCHAR}, Tag.class));
+        return Optional.of(loadAll()
+                .stream()
+                .filter(tag -> tag.getName().equals(name))
+                .findAny().orElse(null));
     }
 
     private int countByName(String name){
