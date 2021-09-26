@@ -1,6 +1,7 @@
 package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.TagDao;
+import com.epam.esm.model.dto.TagDeleteDTO;
 import com.epam.esm.model.dto.TagInputDTO;
 import com.epam.esm.model.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Types;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class TagDaoImpl implements TagDao {
@@ -27,20 +29,43 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public boolean create(TagInputDTO tagInputDTO){
-        int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM tags WHERE name=?",
-                new Object[]{tagInputDTO.getName()},
-                new int[]{Types.VARCHAR},
-                Integer.class);
+    public boolean create(String name){
+        int count = countByName(name);
 
         if(count != 0) {
             return false;
         }
 
         jdbcTemplate.update("INSERT INTO tags (name) VALUES (?)",
-                new Object[]{tagInputDTO.getName()},
+                new Object[]{name},
                 new int[]{Types.VARCHAR});
         return true;
     }
 
+    @Override
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM tags WHERE id=?",
+                new Object[]{id},
+                new int[]{Types.INTEGER});
+    }
+
+    @Override
+    public Optional<Tag> loadByName(String name) {
+        int count = countByName(name);
+
+        if(count == 0){
+            return Optional.empty();
+        }
+
+        return Optional.of(jdbcTemplate.queryForObject("SELECT * FROM tags WHERE name=?",
+                new Object[]{name},
+                new int[]{Types.VARCHAR}, Tag.class));
+    }
+
+    private int countByName(String name){
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM tags WHERE name=?",
+                new Object[]{name},
+                new int[]{Types.VARCHAR},
+                Integer.class);
+    }
 }
