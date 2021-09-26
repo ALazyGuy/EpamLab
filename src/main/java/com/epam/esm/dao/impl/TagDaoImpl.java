@@ -57,6 +57,14 @@ public class TagDaoImpl implements TagDao {
                 .findAny().orElse(null));
     }
 
+    @Override
+    public Optional<Tag> loadById(int id) {
+        return Optional.of(loadAll()
+                .stream()
+                .filter(tag -> tag.getId() == id)
+                .findAny().orElse(null));
+    }
+
     private int countByName(String name){
         return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM tags WHERE name=?",
                 new Object[]{name},

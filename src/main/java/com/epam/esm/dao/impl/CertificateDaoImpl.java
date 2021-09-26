@@ -2,6 +2,7 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.dao.TagDao;
+import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.model.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Component;
 import java.sql.Types;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Component
 public class CertificateDaoImpl implements CertificateDao {
@@ -27,7 +30,7 @@ public class CertificateDaoImpl implements CertificateDao {
 
     @Override
     public List<GiftCertificate> loadAll() {
-        return jdbcTemplate.query("SELECT * FROM certificates", new BeanPropertyRowMapper(GiftCertificate.class));
+        return null;
     }
 
     @Override
@@ -66,6 +69,18 @@ public class CertificateDaoImpl implements CertificateDao {
     @Override
     public List<GiftCertificate> loadWhereDescriptionLike(String description) {
         return null;
+    }
+
+    @Override
+    public Optional<GiftCertificate> loadById(int id) {
+        return Optional.of(jdbcTemplate.query("SELECT certificates.*, GROUP_CONCAT(ct.tag_id SEPARATOR ' ') AS tId " +
+                "FROM certificates JOIN" +
+                " certificates_tags ct on certificates.id = ct.certificate_id" +
+                " and certificates.id = ?",
+                new Object[]{id},
+                new int[]{Types.INTEGER},
+                new CertificateMapper(tagDao))
+                .stream().findAny().orElse(null));
     }
 
     private int countCertificates(String name){

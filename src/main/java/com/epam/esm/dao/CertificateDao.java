@@ -5,10 +5,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public interface CertificateDao {
     List<GiftCertificate> loadAll();
+    Optional<GiftCertificate> loadById(int id);
     void create(String name, String description,
                 double price, int duration,
                 Date createDate, Date lastUpdateDate, List<String> tags);
