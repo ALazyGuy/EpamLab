@@ -3,6 +3,7 @@ package com.epam.esm.dao.impl;
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.mapper.CertificateMapper;
+import com.epam.esm.model.dto.CertificateCreateDTO;
 import com.epam.esm.model.entity.GiftCertificate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,8 +36,8 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    public void create(String name, String description, double price, int duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<String> tags) {
-        int count = countCertificates(name);
+    public void create(CertificateCreateDTO certificateCreateDTO) {
+        int count = countCertificates(certificateCreateDTO.getName());
 
         if(count != 0){
             return;
@@ -44,13 +45,18 @@ public class CertificateDaoImpl implements CertificateDao {
 
         jdbcTemplate.update("INSERT INTO certificates (name, description, price, duration, create_date, last_update_date) " +
                 "VALUES (?, ?, ?, ?, ?, ?)",
-                new Object[]{name, description, price, duration, createDate, lastUpdateDate},
+                new Object[]{certificateCreateDTO.getName(),
+                        certificateCreateDTO.getDescription(),
+                        certificateCreateDTO.getPrice(),
+                        certificateCreateDTO.getDuration(),
+                        LocalDateTime.now(),
+                        LocalDateTime.now()},
                 new int[]{ Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.INTEGER, Types.TIMESTAMP, Types.TIMESTAMP});
 
 
         int certificateId = jdbcTemplate.queryForObject("SELECT MAX(id) FROM certificates", Integer.class);
 
-        tags.stream().map(tagDao::create).forEach(tag -> {
+        certificateCreateDTO.getTags().stream().map(tagDao::create).forEach(tag -> {
             jdbcTemplate.update("INSERT INTO certificates_tags (certificate_id, tag_id) VALUES (?, ?)",
                     new Object[]{certificateId, tag.getId()},
                     new int[]{Types.INTEGER, Types.INTEGER});

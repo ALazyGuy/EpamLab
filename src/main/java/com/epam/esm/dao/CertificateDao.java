@@ -1,5 +1,6 @@
 package com.epam.esm.dao;
 
+import com.epam.esm.model.dto.CertificateCreateDTO;
 import com.epam.esm.model.entity.GiftCertificate;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +12,7 @@ import java.util.Optional;
 public interface CertificateDao {
     List<GiftCertificate> loadAll();
     Optional<GiftCertificate> loadById(int id);
-    void create(String name, String description,
-                double price, int duration,
-                LocalDateTime createDate, LocalDateTime lastUpdateDate, List<String> tags);
+    void create(CertificateCreateDTO certificateCreateDTO);
     //List<GiftCertificate> loadByTagName(String tag);
     //List<GiftCertificate> loadWhereNameLike(String name);
     //List<GiftCertificate> loadWhereDescriptionLike(String description);
