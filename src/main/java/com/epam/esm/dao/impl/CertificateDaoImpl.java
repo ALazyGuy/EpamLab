@@ -4,9 +4,7 @@ import com.epam.esm.builder.SQLQueryParamBuilder;
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.mapper.CertificateMapper;
-import com.epam.esm.model.dto.CertificateCreateDTO;
 import com.epam.esm.model.entity.GiftCertificate;
-import com.epam.esm.model.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -38,8 +36,8 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    public void create(CertificateCreateDTO certificateCreateDTO) {
-        int count = countCertificates(certificateCreateDTO.getName());
+    public void create(String name, String description, double price, int duration, List<String> tags) {
+        int count = countCertificates(name);
 
         if(count != 0){
             return;
@@ -47,10 +45,10 @@ public class CertificateDaoImpl implements CertificateDao {
 
         jdbcTemplate.update("INSERT INTO certificates (name, description, price, duration, create_date, last_update_date) " +
                 "VALUES (?, ?, ?, ?, ?, ?)",
-                new Object[]{certificateCreateDTO.getName(),
-                        certificateCreateDTO.getDescription(),
-                        certificateCreateDTO.getPrice(),
-                        certificateCreateDTO.getDuration(),
+                new Object[]{name,
+                        description,
+                        price,
+                        duration,
                         LocalDateTime.now(),
                         LocalDateTime.now()},
                 new int[]{ Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.INTEGER, Types.TIMESTAMP, Types.TIMESTAMP});
@@ -58,7 +56,7 @@ public class CertificateDaoImpl implements CertificateDao {
 
         int certificateId = jdbcTemplate.queryForObject("SELECT MAX(id) FROM certificates", Integer.class);
 
-        certificateCreateDTO.getTags().stream().map(tagDao::create).forEach(tag -> {
+        tags.stream().map(tagDao::create).forEach(tag -> {
             jdbcTemplate.update("INSERT INTO certificates_tags (certificate_id, tag_id) VALUES (?, ?)",
                     new Object[]{certificateId, tag.getId()},
                     new int[]{Types.INTEGER, Types.INTEGER});
@@ -78,19 +76,12 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    public List<GiftCertificate> search(String tagName, String namePart, String descriptionPart) {
-        String query = "SELECT certificates.*, GROUP_CONCAT(ct.tag_id SEPARATOR ' ') AS tId " +
+    public List<GiftCertificate> search(SQLQueryParamBuilder sqlQueryParamBuilder) {
+        String query = String.format("SELECT certificates.*, GROUP_CONCAT(ct.tag_id SEPARATOR ' ') AS tId " +
                         "FROM certificates JOIN" +
                         " certificates_tags ct ON certificates.id = ct.certificate_id" +
                         " LEFT JOIN tags t on t.id = ct.tag_id%s" +
-                        " GROUP BY certificates.id";
-
-        query = String.format(query, SQLQueryParamBuilder
-                .initEquals("t.name", tagName)
-                .like("certificates.name", namePart)
-                .like("certificates.description", descriptionPart)
-                .build());
-
+                        " GROUP BY certificates.id", sqlQueryParamBuilder.build());
         return jdbcTemplate.query(query, new CertificateMapper(tagDao));
     }
 
