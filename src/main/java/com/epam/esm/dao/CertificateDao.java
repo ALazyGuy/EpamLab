@@ -14,4 +14,5 @@ public interface CertificateDao {
     Optional<GiftCertificate> loadById(int id);
     void create(CertificateCreateDTO certificateCreateDTO);
     List<GiftCertificate> search(String tagName, String namePart, String descriptionPart);
+    void delete(int id);
 }

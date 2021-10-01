@@ -6,6 +6,7 @@ import com.epam.esm.dao.TagDao;
 import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.model.dto.CertificateCreateDTO;
 import com.epam.esm.model.entity.GiftCertificate;
+import com.epam.esm.model.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -91,6 +92,14 @@ public class CertificateDaoImpl implements CertificateDao {
                 .build());
 
         return jdbcTemplate.query(query, new CertificateMapper(tagDao));
+    }
+
+    @Override
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM certificates WHERE id = ?", id);
+        jdbcTemplate.update("DELETE t FROM tags t" +
+                " LEFT JOIN certificates_tags ct on t.id = ct.tag_id " +
+                "WHERE ct.tag_id IS NULL");
     }
 
     private int countCertificates(String name){
