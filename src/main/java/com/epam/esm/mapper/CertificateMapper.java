@@ -24,8 +24,8 @@ public class CertificateMapper implements RowMapper<GiftCertificate> {
         result.setDescription(resultSet.getString("description"));
         result.setPrice(resultSet.getDouble("price"));
         result.setDuration(resultSet.getInt("duration"));
-        result.setCreateDate(resultSet.getDate("create_date"));
-        result.setLastUpdateDate(resultSet.getDate("last_update_date"));
+        result.setCreateDate(resultSet.getTimestamp("create_date").toLocalDateTime());
+        result.setLastUpdateDate(resultSet.getTimestamp("last_update_date").toLocalDateTime());
 
         Arrays.stream(resultSet.getString("tId").split(" "))
                 .map(id -> tagDao.loadById(Integer.valueOf(id)))

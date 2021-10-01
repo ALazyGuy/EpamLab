@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS second.certificates(
     description VARCHAR(200) NOT NULL,
     price DOUBLE NOT NULL,
     duration INT NOT NULL,
-    create_date DATETIME NOT NULL,
-    last_update_date DATETIME NOT NULL
+    create_date TIMESTAMP NOT NULL,
+    last_update_date TIMESTAMP NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS second.certificates_tags(
