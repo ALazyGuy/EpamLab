@@ -13,8 +13,5 @@ public interface CertificateDao {
     List<GiftCertificate> loadAll();
     Optional<GiftCertificate> loadById(int id);
     void create(CertificateCreateDTO certificateCreateDTO);
-    //List<GiftCertificate> loadByTagName(String tag);
-    //List<GiftCertificate> loadWhereNameLike(String name);
-    //List<GiftCertificate> loadWhereDescriptionLike(String description);
-    //TODO Add update method
+    List<GiftCertificate> search(String tagName, String namePart, String descriptionPart);
 }

@@ -3,36 +3,33 @@ package com.epam.esm.builder;
 public class SQLQueryParamBuilder {
 
     private StringBuilder result;
+    private boolean initialized;
 
-    private SQLQueryParamBuilder(String start){
+    private SQLQueryParamBuilder(String start, boolean isEmpty){
+        initialized = !isEmpty;
         result = new StringBuilder(start);
     }
 
-    public static SQLQueryParamBuilder initEquals(String paramName){
-        return new SQLQueryParamBuilder(String.format("WHERE %s = ?"));
+    public static SQLQueryParamBuilder initEquals(String paramName, String param){
+        if(param.isEmpty()){
+            return new SQLQueryParamBuilder("", param.isEmpty());
+        }
+        return new SQLQueryParamBuilder(String.format(" WHERE %s = '%s'", paramName, param), param.isEmpty());
     }
 
-    public static SQLQueryParamBuilder initLike(String paramName){
-        return new SQLQueryParamBuilder(String.format("WHERE %s LIKE ?"));
-    }
+    public SQLQueryParamBuilder like(String paramName, String param){
+        if(param.isEmpty()){
+            return this;
+        }
 
-    public SQLQueryParamBuilder or(){
-        this.result.append(" OR ");
-        return this;
-    }
+        if(!initialized){
+            initialized = true;
+            result = new StringBuilder(" WHERE ");
+        }else{
+            result.append(" AND ");
+        }
 
-    public SQLQueryParamBuilder and(){
-        this.result.append(" AND ");
-        return this;
-    }
-
-    public SQLQueryParamBuilder like(String paramName){
-        this.result.append(String.format("%s LIKE ?", paramName));
-        return this;
-    }
-
-    public SQLQueryParamBuilder equals(String paramName){
-        this.result.append(String.format("%s = ?", paramName));
+        this.result.append(String.format("%s LIKE '%%%s%%'", paramName, param));
         return this;
     }
 

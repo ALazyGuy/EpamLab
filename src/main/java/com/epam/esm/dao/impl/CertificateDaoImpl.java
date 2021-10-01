@@ -1,5 +1,6 @@
 package com.epam.esm.dao.impl;
 
+import com.epam.esm.builder.SQLQueryParamBuilder;
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.mapper.CertificateMapper;
@@ -73,6 +74,23 @@ public class CertificateDaoImpl implements CertificateDao {
                 new int[]{Types.INTEGER},
                 new CertificateMapper(tagDao))
                 .stream().findAny().orElse(null));
+    }
+
+    @Override
+    public List<GiftCertificate> search(String tagName, String namePart, String descriptionPart) {
+        String query = "SELECT certificates.*, GROUP_CONCAT(ct.tag_id SEPARATOR ' ') AS tId " +
+                        "FROM certificates JOIN" +
+                        " certificates_tags ct ON certificates.id = ct.certificate_id" +
+                        " LEFT JOIN tags t on t.id = ct.tag_id%s" +
+                        " GROUP BY certificates.id";
+
+        query = String.format(query, SQLQueryParamBuilder
+                .initEquals("t.name", tagName)
+                .like("certificates.name", namePart)
+                .like("certificates.description", descriptionPart)
+                .build());
+
+        return jdbcTemplate.query(query, new CertificateMapper(tagDao));
     }
 
     private int countCertificates(String name){
