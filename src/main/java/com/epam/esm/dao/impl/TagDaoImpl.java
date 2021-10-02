@@ -1,8 +1,6 @@
 package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.TagDao;
-import com.epam.esm.model.dto.TagDeleteDTO;
-import com.epam.esm.model.dto.TagInputDTO;
 import com.epam.esm.model.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -29,17 +27,17 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public Tag create(String name){
+    public boolean create(String name){
         int count = countByName(name);
 
         if(count != 0) {
-            return loadByName(name).get();
+            return false;
         }
 
         jdbcTemplate.update("INSERT INTO tags (name) VALUES (?)",
                 new Object[]{name},
                 new int[]{Types.VARCHAR});
-        return loadByName(name).get();
+        return true;
     }
 
     @Override

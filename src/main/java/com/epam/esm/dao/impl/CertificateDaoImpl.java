@@ -56,7 +56,10 @@ public class CertificateDaoImpl implements CertificateDao {
 
         int certificateId = jdbcTemplate.queryForObject("SELECT MAX(id) FROM certificates", Integer.class);
 
-        tags.stream().map(tagDao::create).forEach(tag -> {
+        tags.stream().map(t -> {
+            tagDao.create(t);
+            return tagDao.loadByName(t).get();
+        }).forEach(tag -> {
             jdbcTemplate.update("INSERT INTO certificates_tags (certificate_id, tag_id) VALUES (?, ?)",
                     new Object[]{certificateId, tag.getId()},
                     new int[]{Types.INTEGER, Types.INTEGER});

@@ -11,6 +11,6 @@ public interface TagDao {
     List<Tag> loadAll();
     Optional<Tag> loadByName(String name);
     Optional<Tag> loadById(int id);
-    Tag create(String name);
+    boolean create(String name);
     void delete(int id);
 }
