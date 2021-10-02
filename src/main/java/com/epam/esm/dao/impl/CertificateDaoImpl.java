@@ -36,11 +36,11 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    public void create(String name, String description, double price, int duration, List<String> tags) {
+    public boolean create(String name, String description, double price, int duration, List<String> tags) {
         int count = countCertificates(name);
 
         if(count != 0){
-            return;
+            return false;
         }
 
         jdbcTemplate.update("INSERT INTO certificates (name, description, price, duration, create_date, last_update_date) " +
@@ -64,6 +64,7 @@ public class CertificateDaoImpl implements CertificateDao {
                     new Object[]{certificateId, tag.getId()},
                     new int[]{Types.INTEGER, Types.INTEGER});
         });
+        return true;
     }
 
     @Override

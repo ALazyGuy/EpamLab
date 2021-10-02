@@ -3,7 +3,6 @@ package com.epam.esm.service.impl;
 import com.epam.esm.builder.SQLQueryParamBuilder;
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.model.dto.CertificateCreateDTO;
-import com.epam.esm.model.dto.CertificateDeleteDTO;
 import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,8 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public void create(CertificateCreateDTO certificateCreateDTO) {
-        certificateDao.create(certificateCreateDTO.getName(),
+    public boolean create(CertificateCreateDTO certificateCreateDTO) {
+        return certificateDao.create(certificateCreateDTO.getName(),
                 certificateCreateDTO.getDescription(),
                 certificateCreateDTO.getPrice(),
                 certificateCreateDTO.getDuration(),
@@ -31,8 +30,8 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public void delete(CertificateDeleteDTO certificateDeleteDTO) {
-        certificateDao.delete(certificateDeleteDTO.getId());
+    public void delete(int id) {
+        certificateDao.delete(id);
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.util.Optional;
 @Component
 public interface CertificateDao {
     List<GiftCertificate> loadAll();
-    void create(String name, String description, double price, int duration, List<String> tags);
+    boolean create(String name, String description, double price, int duration, List<String> tags);
     Optional<GiftCertificate> loadById(int id);
     List<GiftCertificate> search(SQLQueryParamBuilder sqlQueryParamBuilder);
     void delete(int id);
