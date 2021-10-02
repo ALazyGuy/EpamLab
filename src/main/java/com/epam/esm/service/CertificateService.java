@@ -1,6 +1,7 @@
 package com.epam.esm.service;
 
 import com.epam.esm.model.dto.CertificateCreateDTO;
+import com.epam.esm.model.dto.CertificateUpdateDTO;
 import com.epam.esm.model.entity.GiftCertificate;
 import org.springframework.stereotype.Service;
 
@@ -12,5 +13,5 @@ public interface CertificateService {
     void delete(int id);
     List<GiftCertificate> getAllCertificates();
     List<GiftCertificate> searchBy(String tagName, String namePart, String descriptionPart);
-    //TODO Add update
+    void updateCertificate(int id, CertificateUpdateDTO certificateUpdateDTO);
 }

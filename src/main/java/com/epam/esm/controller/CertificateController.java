@@ -1,6 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.model.dto.CertificateCreateDTO;
+import com.epam.esm.model.dto.CertificateUpdateDTO;
 import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,10 @@ public class CertificateController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id){
         certificateService.delete(id);
+    }
+
+    @PatchMapping(value = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void update(@PathVariable int id, @RequestBody CertificateUpdateDTO certificateUpdateDTO){
+        certificateService.updateCertificate(id, certificateUpdateDTO);
     }
 }

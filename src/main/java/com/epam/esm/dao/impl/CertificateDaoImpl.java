@@ -1,5 +1,6 @@
 package com.epam.esm.dao.impl;
 
+import com.epam.esm.builder.SQLColumnListBuilder;
 import com.epam.esm.builder.SQLQueryParamBuilder;
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.dao.TagDao;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Types;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,6 +97,20 @@ public class CertificateDaoImpl implements CertificateDao {
         jdbcTemplate.update("DELETE t FROM tags t" +
                 " LEFT JOIN certificates_tags ct on t.id = ct.tag_id " +
                 "WHERE ct.tag_id IS NULL");
+    }
+
+    //TODO Fix time
+    @Override
+    public void update(int id, SQLColumnListBuilder.SQLColumnListState state) {
+        List<String> values = state.getValues();
+        values.add(Integer.toString(id));
+
+        jdbcTemplate.update(
+                String.format(
+                    "UPDATE certificates SET %s WHERE id = ?",
+                        state.getArgs()),
+                values.toArray()
+                );
     }
 
     private int countCertificates(String name){

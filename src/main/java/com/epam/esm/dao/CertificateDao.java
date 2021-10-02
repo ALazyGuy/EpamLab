@@ -1,5 +1,6 @@
 package com.epam.esm.dao;
 
+import com.epam.esm.builder.SQLColumnListBuilder;
 import com.epam.esm.builder.SQLQueryParamBuilder;
 import com.epam.esm.model.entity.GiftCertificate;
 import org.springframework.stereotype.Component;
@@ -13,5 +14,6 @@ public interface CertificateDao {
     boolean create(String name, String description, double price, int duration, List<String> tags);
     Optional<GiftCertificate> loadById(int id);
     List<GiftCertificate> search(SQLQueryParamBuilder sqlQueryParamBuilder);
+    void update(int id, SQLColumnListBuilder.SQLColumnListState state);
     void delete(int id);
 }
