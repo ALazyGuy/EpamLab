@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(value = "Certificate Controller")
@@ -69,8 +70,8 @@ public class CertificateController {
             @ApiResponse(code = 400, message = "If JSON object in request body is invalid")
     })
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity create(@RequestBody CertificateCreateDTO certificateCreateDTO){
-        if(certificateService.create(certificateCreateDTO)){
+    public ResponseEntity create(@Valid @RequestBody CertificateCreateDTO certificateCreateDTO){
+        if(!certificateService.create(certificateCreateDTO)){
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
@@ -90,7 +91,7 @@ public class CertificateController {
             @ApiResponse(code = 400, message = "If JSON object in request body is invalid")
     })
     @PatchMapping(value = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void update(@PathVariable int id, @RequestBody CertificateUpdateDTO certificateUpdateDTO){
+    public void update(@PathVariable int id, @Valid @RequestBody CertificateUpdateDTO certificateUpdateDTO){
         certificateService.updateCertificate(id, certificateUpdateDTO);
     }
 }
