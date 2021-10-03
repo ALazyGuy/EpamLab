@@ -82,13 +82,13 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    public List<GiftCertificate> search(SQLQueryParamBuilder sqlQueryParamBuilder) {
+    public List<GiftCertificate> search(SQLQueryParamBuilder.SQLQueryParamState sqlQueryParamState) {
         String query = String.format("SELECT certificates.*, GROUP_CONCAT(ct.tag_id SEPARATOR ' ') AS tId " +
                         "FROM certificates JOIN" +
                         " certificates_tags ct ON certificates.id = ct.certificate_id" +
                         " LEFT JOIN tags t on t.id = ct.tag_id%s" +
-                        " GROUP BY certificates.id", sqlQueryParamBuilder.build());
-        return jdbcTemplate.query(query, new CertificateMapper(tagDao));
+                        " GROUP BY certificates.id", sqlQueryParamState.getQuery());
+        return jdbcTemplate.query(query, new CertificateMapper(tagDao), sqlQueryParamState.getArgs().toArray());
     }
 
     @Override
@@ -99,7 +99,6 @@ public class CertificateDaoImpl implements CertificateDao {
                 "WHERE ct.tag_id IS NULL");
     }
 
-    //TODO Fix time
     @Override
     public void update(int id, SQLColumnListBuilder.SQLColumnListState state) {
         List<String> values = state.getValues();

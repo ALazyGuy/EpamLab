@@ -13,7 +13,7 @@ public interface CertificateDao {
     List<GiftCertificate> loadAll();
     boolean create(String name, String description, double price, int duration, List<String> tags);
     Optional<GiftCertificate> loadById(int id);
-    List<GiftCertificate> search(SQLQueryParamBuilder sqlQueryParamBuilder);
+    List<GiftCertificate> search(SQLQueryParamBuilder.SQLQueryParamState sqlQueryParamState);
     void update(int id, SQLColumnListBuilder.SQLColumnListState state);
     void delete(int id);
 }

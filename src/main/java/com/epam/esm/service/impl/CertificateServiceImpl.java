@@ -48,7 +48,7 @@ public class CertificateServiceImpl implements CertificateService {
                 .initEquals("t.name", tagName)
                 .like("certificates.name", namePart)
                 .like("certificates.description", descriptionPart);
-        return certificateDao.search(sqlQueryParamBuilder);
+        return certificateDao.search(sqlQueryParamBuilder.build());
     }
 
     @Override
