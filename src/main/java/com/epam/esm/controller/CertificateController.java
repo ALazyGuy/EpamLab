@@ -29,28 +29,12 @@ public class CertificateController {
         this.certificateService = certificateService;
     }
 
-    @ApiOperation("Get all existing certificates")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "If certificates found successfully", response = GiftCertificate.class),
-            @ApiResponse(code = 204, message = "If no certificates found"),
-    })
-    @GetMapping(value = "/all", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity getAll(){
-        List<GiftCertificate> certificates = certificateService.getAllCertificates();
-
-        if(certificates.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-
-        return ResponseEntity.ok(certificates);
-    }
-
     @ApiOperation("Search certificates by optional parameters")
     @ApiResponses({
             @ApiResponse(code = 200, message = "If certificates found successfully", response = GiftCertificate.class),
             @ApiResponse(code = 204, message = "If no certificates found"),
     })
-    @GetMapping(value = "/search", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity search(@RequestParam(required = false, defaultValue = "") String tagName,
                                  @RequestParam(required = false, defaultValue = "") String namePart,
                                  @RequestParam(required = false, defaultValue = "") String descriptionPart){
