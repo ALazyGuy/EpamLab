@@ -33,8 +33,8 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public void delete(int id) {
-        certificateDao.delete(id);
+    public boolean delete(int id) {
+        return certificateDao.delete(id);
     }
 
     @Override
@@ -52,21 +52,25 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public void updateCertificate(int id, CertificateUpdateDTO certificateUpdateDTO) {
+    public boolean updateCertificate(int id, CertificateUpdateDTO certificateUpdateDTO) {
+        if(certificateDao.loadById(id).isEmpty()){
+            return false;
+        }
+
         SQLColumnListBuilder sqlColumnListBuilder = SQLColumnListBuilder.init()
                 .append("name", certificateUpdateDTO.getName())
                 .append("description", certificateUpdateDTO.getDescription())
                 .append("price", certificateUpdateDTO.getPrice())
                 .append("duration", certificateUpdateDTO.getDuration());
 
-        if(sqlColumnListBuilder.isEmpty()){
-            return;
+        if(!sqlColumnListBuilder.isEmpty()){
+            SQLColumnListBuilder.SQLColumnListState state = sqlColumnListBuilder
+                    .append("last_update_date", LocalDateTime.now().toString())
+                    .build();
+            certificateDao.update(id, state);
         }
 
-        SQLColumnListBuilder.SQLColumnListState state = sqlColumnListBuilder
-                .append("last_update_date", LocalDateTime.now().toString())
-                .build();
-        certificateDao.update(id, state);
+        return true;
     }
 
 }

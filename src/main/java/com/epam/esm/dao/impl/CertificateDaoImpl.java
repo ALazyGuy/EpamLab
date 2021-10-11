@@ -92,11 +92,18 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM certificates WHERE id = ?", id);
+    public boolean delete(int id) {
+        int affected = jdbcTemplate.update("DELETE FROM certificates WHERE id = ?", id);
+
+        if(affected == 0){
+            return false;
+        }
+
         jdbcTemplate.update("DELETE t FROM tags t" +
                 " LEFT JOIN certificates_tags ct on t.id = ct.tag_id " +
                 "WHERE ct.tag_id IS NULL");
+
+        return true;
     }
 
     @Override

@@ -10,8 +10,8 @@ import java.util.List;
 @Service
 public interface CertificateService {
     boolean create(CertificateCreateDTO certificateCreateDTO);
-    void delete(int id);
+    boolean delete(int id);
     List<GiftCertificate> getAllCertificates();
     List<GiftCertificate> searchBy(String tagName, String namePart, String descriptionPart);
-    void updateCertificate(int id, CertificateUpdateDTO certificateUpdateDTO);
+    boolean updateCertificate(int id, CertificateUpdateDTO certificateUpdateDTO);
 }

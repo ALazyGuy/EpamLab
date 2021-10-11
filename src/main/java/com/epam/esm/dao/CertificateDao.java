@@ -15,5 +15,5 @@ public interface CertificateDao {
     Optional<GiftCertificate> loadById(int id);
     List<GiftCertificate> search(SQLQueryParamBuilder.SQLQueryParamState sqlQueryParamState);
     void update(int id, SQLColumnListBuilder.SQLColumnListState state);
-    void delete(int id);
+    boolean delete(int id);
 }

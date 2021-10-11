@@ -63,19 +63,32 @@ public class CertificateController {
     }
 
     @ApiOperation("Delete certificate by id")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "On successful deletion"),
+            @ApiResponse(code = 404, message = "Certificate with given id doesn't exist")
+    })
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id){
-        certificateService.delete(id);
+    public ResponseEntity delete(@PathVariable int id){
+        if(certificateService.delete(id)){
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
 
     @ApiOperation("Update certificate by id")
     @ApiResponses({
             @ApiResponse(code = 200, message = "If updated successfully or certificate doesn't exist"),
-            @ApiResponse(code = 400, message = "If JSON object in request body is invalid")
+            @ApiResponse(code = 400, message = "If JSON object in request body is invalid"),
+            @ApiResponse(code = 404, message = "Certificate with given id doesn't exist")
     })
     @PatchMapping(value = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void update(@PathVariable int id, @Valid @RequestBody CertificateUpdateDTO certificateUpdateDTO){
-        certificateService.updateCertificate(id, certificateUpdateDTO);
+    public ResponseEntity update(@PathVariable int id, @Valid @RequestBody CertificateUpdateDTO certificateUpdateDTO){
+        if(certificateService.updateCertificate(id, certificateUpdateDTO)){
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
