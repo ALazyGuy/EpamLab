@@ -2,6 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.configuration.TestConfiguration;
 import com.epam.esm.dao.CertificateDao;
+import com.epam.esm.model.dto.CertificateCreateDTO;
 import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.model.entity.Tag;
 import com.epam.esm.service.CertificateService;
@@ -14,9 +15,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
@@ -68,7 +70,14 @@ public class CertificateServiceImplTest {
 
         when(certificateDao.loadAll()).thenReturn(all);
         when(certificateDao.search(any())).thenReturn(searchResult);
+        when(certificateDao.create("Existing", "Existing",10,
+                10, new ArrayList<>())).thenReturn(false);
+        when(certificateDao.create("NotExisting", "NotExisting",11,
+                11, new ArrayList<>())).thenReturn(true);
+        when(certificateDao.delete(20)).thenReturn(false);
+        when(certificateDao.delete(21)).thenReturn(true);
     }
+
 
     @Test
     public void getAllCertificatesTest(){
@@ -80,6 +89,42 @@ public class CertificateServiceImplTest {
     public void searchByTest(){
         List<GiftCertificate> actual = certificateService.searchBy("", "", "");
         assertEquals(searchResult, actual);
+    }
+
+    @Test
+    public void createFailTest(){
+        CertificateCreateDTO certificateCreateDTO = new CertificateCreateDTO();
+        certificateCreateDTO.setName("Existing");
+        certificateCreateDTO.setDescription("Existing");
+        certificateCreateDTO.setPrice(10);
+        certificateCreateDTO.setDuration(10);
+        certificateCreateDTO.setTags(new ArrayList<>());
+        boolean result = certificateService.create(certificateCreateDTO);
+        assertFalse(result);
+    }
+
+    @Test
+    public void createSuccessTest(){
+        CertificateCreateDTO certificateCreateDTO = new CertificateCreateDTO();
+        certificateCreateDTO.setName("NotExisting");
+        certificateCreateDTO.setDescription("NotExisting");
+        certificateCreateDTO.setPrice(11);
+        certificateCreateDTO.setDuration(11);
+        certificateCreateDTO.setTags(new ArrayList<>());
+        boolean result = certificateService.create(certificateCreateDTO);
+        assertTrue(result);
+    }
+
+    @Test
+    public void deleteFailTest(){
+        boolean result = certificateService.delete(20);
+        assertFalse(result);
+    }
+
+    @Test
+    public void deleteSuccessTest(){
+        boolean result = certificateService.delete(21);
+        assertTrue(result);
     }
 
 }
