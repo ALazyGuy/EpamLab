@@ -14,7 +14,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfiguration.class, loader = AnnotationConfigContextLoader.class)
@@ -32,6 +32,7 @@ public class TagServiceImplTest {
         when(tagDao.loadAll()).thenReturn(tags);
         List<Tag> actual = tagService.getAll();
         assertEquals(tags, actual);
+        verify(tagDao, times(1)).loadAll();
     }
 
 }

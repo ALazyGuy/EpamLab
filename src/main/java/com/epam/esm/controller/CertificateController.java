@@ -1,5 +1,6 @@
 package com.epam.esm.controller;
 
+import com.epam.esm.configuration.annotation.DefaultDto;
 import com.epam.esm.model.dto.CertificateCreateDTO;
 import com.epam.esm.model.dto.CertificateUpdateDTO;
 import com.epam.esm.model.entity.GiftCertificate;
@@ -84,7 +85,7 @@ public class CertificateController {
             @ApiResponse(code = 404, message = "Certificate with given id doesn't exist")
     })
     @PatchMapping(value = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity update(@PathVariable int id, @Valid @RequestBody CertificateUpdateDTO certificateUpdateDTO){
+    public ResponseEntity update(@PathVariable int id, @Valid @DefaultDto CertificateUpdateDTO certificateUpdateDTO){
         if(certificateService.updateCertificate(id, certificateUpdateDTO)){
             return ResponseEntity.ok().build();
         }
