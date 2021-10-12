@@ -49,7 +49,7 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public Optional<Tag> loadByName(String name) {
-        return Optional.of(loadAll()
+        return Optional.ofNullable(loadAll()
                 .stream()
                 .filter(tag -> tag.getName().equals(name))
                 .findAny().orElse(null));
@@ -57,7 +57,7 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public Optional<Tag> loadById(int id) {
-        return Optional.of(loadAll()
+        return Optional.ofNullable(loadAll()
                 .stream()
                 .filter(tag -> tag.getId() == id)
                 .findAny().orElse(null));
