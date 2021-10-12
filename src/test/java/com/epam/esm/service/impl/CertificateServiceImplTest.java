@@ -1,6 +1,6 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.configuration.TestConfiguration;
+import com.epam.esm.configuration.ServiceTestConfiguration;
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.model.dto.CertificateCreateDTO;
 import com.epam.esm.model.entity.GiftCertificate;
@@ -23,7 +23,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = TestConfiguration.class, loader = AnnotationConfigContextLoader.class)
+@ContextConfiguration(classes = ServiceTestConfiguration.class, loader = AnnotationConfigContextLoader.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CertificateServiceImplTest {
 

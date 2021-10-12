@@ -1,6 +1,6 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.configuration.TestConfiguration;
+import com.epam.esm.configuration.ServiceTestConfiguration;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.model.entity.Tag;
 import com.epam.esm.service.TagService;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = TestConfiguration.class, loader = AnnotationConfigContextLoader.class)
+@ContextConfiguration(classes = ServiceTestConfiguration.class, loader = AnnotationConfigContextLoader.class)
 public class TagServiceImplTest {
 
     private static final List<Tag> tags = List.of(new Tag(1, "tag1"), new Tag(1, "tag2"));
