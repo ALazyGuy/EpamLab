@@ -71,7 +71,7 @@ public class CertificateDaoImpl implements CertificateDao {
 
     @Override
     public Optional<GiftCertificate> loadById(int id) {
-        return Optional.of(jdbcTemplate.query("SELECT certificates.*, GROUP_CONCAT(ct.tag_id SEPARATOR ' ') AS tId " +
+        return Optional.ofNullable(jdbcTemplate.query("SELECT certificates.*, GROUP_CONCAT(ct.tag_id SEPARATOR ' ') AS tId " +
                 "FROM certificates JOIN" +
                 " certificates_tags ct ON certificates.id = ct.certificate_id" +
                 " AND certificates.id = ? GROUP BY certificates.id",
