@@ -1,0 +1,10 @@
+INSERT INTO tags(name) VALUES ('tag1');
+INSERT INTO tags(name) VALUES ('tag2');
+INSERT INTO tags(name) VALUES ('tag3');
+INSERT INTO tags(name) VALUES ('tag4');
+INSERT INTO tags(name) VALUES ('tag5');
+INSERT INTO tags(name) VALUES ('tag6');
+INSERT INTO tags(name) VALUES ('tag7');
+INSERT INTO tags(name) VALUES ('tag8');
+INSERT INTO tags(name) VALUES ('tag9');
+INSERT INTO tags(name) VALUES ('tag0');

@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS certificates_tags;
+DROP TABLE IF EXISTS certificates CASCADE;
+DROP TABLE IF EXISTS tags;
