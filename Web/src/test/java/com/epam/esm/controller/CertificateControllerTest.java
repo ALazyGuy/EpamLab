@@ -118,6 +118,7 @@ public class CertificateControllerTest {
         certificateCreateDTO.setDescription("desk");
         certificateCreateDTO.setPrice(10);
         certificateCreateDTO.setDuration(10);
+        certificateCreateDTO.setTags(List.of("qwe"));
         when(certificateService.create(certificateCreateDTO)).thenReturn(Optional.empty());
 
         mockMvc.perform(post("/v1/certificate")
@@ -136,6 +137,7 @@ public class CertificateControllerTest {
         certificateCreateDTO.setDescription("desk");
         certificateCreateDTO.setPrice(10);
         certificateCreateDTO.setDuration(10);
+        certificateCreateDTO.setTags(List.of("qwe"));
         when(certificateService.create(certificateCreateDTO)).thenReturn(Optional.of(new GiftCertificate()));
 
         mockMvc.perform(post("/v1/certificate")
@@ -154,6 +156,7 @@ public class CertificateControllerTest {
         certificateUpdateDTO.setDescription("desk");
         certificateUpdateDTO.setDuration(10);
         certificateUpdateDTO.setPrice(10);
+        certificateUpdateDTO.setTags(List.of());
 
         when(certificateService.updateCertificate(1, certificateUpdateDTO)).thenReturn(Optional.empty());
 
@@ -174,6 +177,7 @@ public class CertificateControllerTest {
         certificateUpdateDTO.setDescription("desk");
         certificateUpdateDTO.setDuration(10);
         certificateUpdateDTO.setPrice(10);
+        certificateUpdateDTO.setTags(List.of());
 
         when(certificateService.updateCertificate(1, certificateUpdateDTO)).thenReturn(Optional.of(new GiftCertificate()));
 

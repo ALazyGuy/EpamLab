@@ -31,7 +31,9 @@ public class GiftCertificate {
     private List<Tag> tags = new LinkedList<>();
 
     public void addTag(Tag tag){
-        this.tags.add(tag);
+        if(tags.stream().noneMatch(t -> t.getId() == tag.getId())){
+            this.tags.add(tag);
+        }
     }
 
     public void removeTag(Tag tag){

@@ -89,7 +89,8 @@ public class CertificateDaoImpl implements CertificateDao {
 
         String query = String.format("SELECT certificates.*, t.id AS tId, t.name AS tName\n" +
                 "                        FROM certificates JOIN\n" +
-                "                         certificates_tags ct ON certificates.id IN (SELECT DISTINCT certificate_id FROM certificates_tags\n" +
+                "                         certificates_tags ct ON certificates.id = ct.certificate_id AND " +
+                "                        certificates.id IN (SELECT DISTINCT certificate_id FROM certificates_tags\n" +
                 "                                LEFT JOIN tags t on t.id = certificates_tags.tag_id %s)\n" +
                 "                         LEFT JOIN tags t ON ct.tag_id = t.id", sqlQueryParamState.getQuery());
         return jdbcTemplate.query(query, new CertificateExtractor(new CertificateMapper()), sqlQueryParamState.getArgs().toArray());

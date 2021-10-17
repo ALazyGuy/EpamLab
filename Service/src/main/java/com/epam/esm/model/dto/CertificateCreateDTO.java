@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CertificateCreateDTO {
     @NotBlank(message = "Name of certificate cannot be empty")
-    @Pattern(regexp = "^([a-zA-Z0-9]|\\s|[.,!?\\n])+$", message = "Invalid name of certificate")
+    @Pattern(regexp = "^([a-zA-Z0-9]|\\s)+$", message = "Invalid name of certificate")
     private String name;
     @NotBlank(message = "Description of certificate cannot be empty")
     @Pattern(regexp = "^([a-zA-Z0-9]|\\s|[.,!?\\n])+$", message = "Invalid description of certificate")

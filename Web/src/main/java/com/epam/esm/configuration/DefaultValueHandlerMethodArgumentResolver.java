@@ -6,12 +6,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.BufferedReader;
 import java.lang.reflect.Field;
 import java.util.stream.Collectors;
@@ -38,6 +42,15 @@ public class DefaultValueHandlerMethodArgumentResolver implements HandlerMethodA
                 if(ReflectionUtils.getField(field, dto) == null) {
                     ReflectionUtils.setField(field, dto, annotation.value());
                 }
+            }
+        }
+
+        if(methodParameter.hasParameterAnnotation(Valid.class)){
+            WebDataBinder binder = webDataBinderFactory.createBinder(nativeWebRequest, dto, "resolvedObject");
+            binder.validate();
+            BindingResult bindingResult = binder.getBindingResult();
+            if(bindingResult.getErrorCount() > 0){
+                throw new MethodArgumentNotValidException(methodParameter, bindingResult);
             }
         }
 

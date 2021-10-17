@@ -22,6 +22,6 @@ public class CertificateUpdateDTO {
     private double price;
     @Min(value = 1, message = "Duration cannot be less than one day")
     private int duration;
-    @NotNull(message = "")
+    @NotNull(message = "Tags list cannot be null")
     private List<String> tags;
 }
