@@ -1,0 +1,5 @@
+rootProject.name = 'SecondModule'
+include 'DAO'
+include 'Service'
+include 'Web'
+
