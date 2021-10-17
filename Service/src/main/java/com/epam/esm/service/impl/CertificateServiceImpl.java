@@ -82,7 +82,7 @@ public class CertificateServiceImpl implements CertificateService {
                 .append("price", certificateUpdateDTO.getPrice())
                 .append("duration", certificateUpdateDTO.getDuration());
 
-        GiftCertificate result = null;
+        Optional<GiftCertificate> result = Optional.empty();
 
         if(!sqlColumnListBuilder.isEmpty()){
             SQLColumnListBuilder.SQLColumnListState state = sqlColumnListBuilder
@@ -91,7 +91,7 @@ public class CertificateServiceImpl implements CertificateService {
             result = certificateDao.update(id, state, tags);
         }
 
-        return Optional.ofNullable(result);
+        return result;
     }
 
     @Override

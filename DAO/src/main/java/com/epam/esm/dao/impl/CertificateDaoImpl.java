@@ -113,7 +113,7 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    public GiftCertificate update(int id, SQLColumnListBuilder.SQLColumnListState state, List<Tag> tags) {
+    public Optional<GiftCertificate> update(int id, SQLColumnListBuilder.SQLColumnListState state, List<Tag> tags) {
         List<String> values = state.getValues();
         values.add(Integer.toString(id));
 
@@ -129,7 +129,7 @@ public class CertificateDaoImpl implements CertificateDao {
             tags.forEach(t -> jdbcTemplate.update("INSERT INTO certificates_tags VALUES (?, ?)", id, t.getId()));
         }
 
-        return loadById(id).get();
+        return loadById(id);
     }
 
     private int countCertificates(String name){
