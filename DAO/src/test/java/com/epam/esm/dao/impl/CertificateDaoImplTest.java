@@ -85,6 +85,13 @@ public class CertificateDaoImplTest {
     }
 
     @Test
+    public void deleteSuccessTest(){
+        runScript("certificate/certificates.sql");
+        boolean deleteResult = certificateDao.delete(1);
+        assertTrue(deleteResult);
+    }
+
+    @Test
     public void searchTest(){
         runScript("certificate/certificates.sql");
         runScript("certificate/certificates_tags.sql");

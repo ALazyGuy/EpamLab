@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -22,5 +22,6 @@ public class CertificateCreateDTO {
     private double price;
     @Min(value = 1, message = "Duration cannot be less than one day")
     private int duration;
-    private List<String> tags = new LinkedList<>();
+    @NotNull(message = "Cannot create a certificate until tags not specified")
+    private List<String> tags;
 }

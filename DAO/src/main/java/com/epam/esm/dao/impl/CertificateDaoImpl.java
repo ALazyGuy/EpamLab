@@ -104,9 +104,8 @@ public class CertificateDaoImpl implements CertificateDao {
         }
 
         jdbcTemplate.update("DELETE FROM certificates_tags WHERE certificate_id = ?", id);
-        jdbcTemplate.update("DELETE FROM tags" +
-                " LEFT JOIN certificates_tags ct on t.id = ct.tag_id " +
-                "WHERE ct.tag_id IS NULL");
+        jdbcTemplate.update("DELETE FROM tags WHERE id NOT IN" +
+                " (SELECT DISTINCT tag_id FROM certificates_tags)");
 
 
         return true;
