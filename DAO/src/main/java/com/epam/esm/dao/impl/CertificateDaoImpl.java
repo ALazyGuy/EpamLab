@@ -88,7 +88,7 @@ public class CertificateDaoImpl implements CertificateDao {
         }
 
         String query = String.format("SELECT certificates.*, t.id AS tId, t.name AS tName\n" +
-                "                        FROM certificates LEFT JOIN\n" +
+                "                        FROM certificates JOIN\n" +
                 "                         certificates_tags ct ON certificates.id IN (SELECT DISTINCT certificate_id FROM certificates_tags\n" +
                 "                                LEFT JOIN tags t on t.id = certificates_tags.tag_id %s)\n" +
                 "                         LEFT JOIN tags t ON ct.tag_id = t.id", sqlQueryParamState.getQuery());
@@ -103,8 +103,8 @@ public class CertificateDaoImpl implements CertificateDao {
             return false;
         }
 
-        jdbcTemplate.update("DELETE r FROM certificates_tags r WHERE certificate_id = ?", id);
-        jdbcTemplate.update("DELETE t FROM tags t" +
+        jdbcTemplate.update("DELETE FROM certificates_tags WHERE certificate_id = ?", id);
+        jdbcTemplate.update("DELETE FROM tags" +
                 " LEFT JOIN certificates_tags ct on t.id = ct.tag_id " +
                 "WHERE ct.tag_id IS NULL");
 
